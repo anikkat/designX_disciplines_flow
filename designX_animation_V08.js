@@ -35,7 +35,7 @@ let displayHeaders = [
 let x = 0;
 let y = 0;
 const fontSize = 14;
-const gridSpacing = 14; // Adjust this value to make the grid tighter or looser
+const gridSpacing = 14; // Adjust value to make the grid tighter or looser
 const noiseScale = 0.001;
 // noiseScale affects the granularity of the noise pattern.
 // Lower value (e.g., 0.0001): Very smooth transitions.
@@ -44,34 +44,32 @@ const timeSpeed = 0.005;
 // timeSpeed affects the speed of the animation.
 // Lower value (e.g., 0.01): Slow animation progression.
 // Higher value (e.g., 0.1): Fast animation progression.
-let lockedIndices = []; // Array to store multiple locked indices
+let lockedIndices = [];
 let hoverIndex = -1;
 const margin = 3;
 const paddingVertical = 10;
 
 let capturing = false;
 let capturer;
-let showHeaders = true; // Control variable to toggle headers
+let showHeaders = true;
 
-let customFont; // Variable to store the custom font
+let customFont;
 
 function preload() {
-  customFont = loadFont('TwoBar_Mono_064_Light.otf'); // Preload the custom font
+  customFont = loadFont('TwoBar_Mono_064_Light.otf');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  frameRate(30); // Lower the frame rate to 30 fps for smoother recording
-  textFont(customFont); // Use the custom font
+  frameRate(30);
+  textFont(customFont);
   textSize(fontSize);
-  colorMode(RGB, 255); // Ensure RGB color mode for accurate color capture
+  colorMode(RGB, 255);
 
-  // Ensure CCapture is defined before initializing
   if (typeof CCapture !== 'undefined') {
-    // Setup capturer
     capturer = new CCapture({
-      format: 'png', // Use PNG sequence for lossless capture
-      framerate: 30 // Match the frame rate to 30 fps
+      format: 'png', 
+      framerate: 30 
     });
   } else {
     console.error("CCapture is not defined. Please check if the library is correctly included.");
@@ -79,7 +77,7 @@ function setup() {
 }
 
 function draw() {
-  background(220, 74, 51); // background colour
+  background(35, 31, 69); // background colour
   textAlign(CENTER, CENTER);
   textSize(fontSize);
   let t = frameCount * timeSpeed;
@@ -95,15 +93,15 @@ function draw() {
 
       if (chr) {
         if (lockedIndices.length === 0) {
-          fill(255, 233, 110); // text colour
+          fill(220, 74, 51); // text colour
         } else if (lockedIndices.includes(idx)) {
           if (lockedIndices[0] === idx) {
-            fill(220, 74, 51); // Text colour for the first clicked header
+            fill(220, 74, 51); // text colour for first clicked header
           } else if (lockedIndices[1] === idx) {
-            fill(255, 233, 110); // Text colour for the second clicked header
+            fill(64,  154, 214); // text colour for second clicked header
           }
         } else {
-          fill(220, 74, 51); // Same as background color to hide remaining characters
+          fill(35, 31, 69); // same as background color to hide remaining characters
         }
         text(chr, i + fontSize / 2, j + fontSize / 2);
       }
@@ -111,9 +109,8 @@ function draw() {
   }
 
   if (showHeaders) {
-    // Calculate maximum width and dynamic font size based on viewport width
     let maxWidth = (width - 2 * margin) / headers.length;
-    let dynamicFontSize = (maxWidth / 10) * 0.9; // Slightly reduce the font size by multiplying by 0.9
+    let dynamicFontSize = (maxWidth / 10) * 0.9;
     textSize(dynamicFontSize);
 
     let totalWidth = maxWidth * headers.length;
@@ -136,8 +133,7 @@ function draw() {
       }
 
       for (let j = 0; j < words.length; j++) {
-        // Draw background rectangle with vertical padding for each word
-        fill(233, 236, 239, 210); // Light gray background with 90% opacity
+        fill(233, 236, 239, 210); // light gray background with 90% opacity
         rect(
           xPos,
           margin + j * (dynamicFontSize + paddingVertical),
@@ -146,9 +142,9 @@ function draw() {
         );
 
         if (isHover || lockedIndices.includes(i)) {
-          fill(255, 0, 0); // Red for hover or locked
+          fill(255, 0, 0); // red for hover or locked
         } else {
-          fill(0); // Default color
+          fill(0);
         }
         textAlign(LEFT, CENTER);
         text(
@@ -173,7 +169,7 @@ function draw() {
 
 function mouseClicked() {
   let maxWidth = (width - 2 * margin) / headers.length;
-  let dynamicFontSize = (maxWidth / 10) * 0.9; // Slightly reduce the font size by multiplying by 0.9
+  let dynamicFontSize = (maxWidth / 10) * 0.9;
   textSize(dynamicFontSize);
 
   let totalWidth = maxWidth * headers.length;
@@ -184,9 +180,8 @@ function mouseClicked() {
     let words = displayHeaders[i].split(" ");
     let headerHeight = words.length * (dynamicFontSize + paddingVertical);
 
-    // Check if the click is within the header area and directly on the text
     if (
-      mouseX > xPos + 5 && // Ensure clicking within the text area
+      mouseX > xPos + 5 &&
       mouseX < xPos + maxWidth &&
       mouseY > margin &&
       mouseY < margin + headerHeight
@@ -194,12 +189,12 @@ function mouseClicked() {
       const index = lockedIndices.indexOf(i);
       if (index === -1) {
         if (lockedIndices.length < 2) {
-          lockedIndices.push(i); // Lock
+          lockedIndices.push(i);
         }
       } else {
-        lockedIndices.splice(index, 1); // Unlock
+        lockedIndices.splice(index, 1);
       }
-      return; // Prevent further action if a header is clicked
+      return;
     }
   }
 }
@@ -219,7 +214,7 @@ function keyPressed() {
   } else if (key === 'r' || key === 'R') {
     toggleRecording();
   } else if (key === '-') {
-    showHeaders = !showHeaders; // Toggle header visibility
+    showHeaders = !showHeaders; // toggle header visibility
   }
 }
 
